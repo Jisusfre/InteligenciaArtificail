@@ -43,13 +43,6 @@ elif menu == "Inicio":
     page = PAGES[menu]
     page.entrada()
 
-if st.sidebar.button("Escribir"):
-    st.write("**Has picado el botón**")
-else:
-    st.write("")
 
-if st.sidebar.button("Limpiar"):
-    st.write("")
-else:
-    st.write("")
+
 
