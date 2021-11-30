@@ -14,3 +14,4 @@ def entrada():
     st.image(imagen, caption = 'Talos principle')
 
 
+

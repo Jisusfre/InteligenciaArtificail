@@ -9,6 +9,7 @@ import numpy as np
 import Apriori
 import Cluster
 import Inicio
+import metricas
 #Crear entorno virtual :
 #   conda create -n streamlit -y
 
@@ -22,13 +23,14 @@ import Inicio
 #   streamlit run mi_programa.py [-- otros posibles argumentos]
 
 #Variables
-PAGES = {"Apriori":Apriori, "Cluster":Cluster, "Inicio":Inicio}
+PAGES = {"Apriori":Apriori, "Cluster":Cluster, "Inicio":Inicio,
+         "Metricas":metricas}
 
 #--------------------------------------------------------------------------
 
 menu = st.sidebar.selectbox(
     label = "Algoritmos",
-    options = ["Inicio", "Apriori", "Cluster"],
+    options = ["Inicio", "Apriori", "Metricas","Cluster"],
     index = 0,
 )
 if menu == "Apriori":
@@ -42,6 +44,10 @@ elif menu == "Cluster":
 elif menu == "Inicio":
     page = PAGES[menu]
     page.entrada()
+
+elif menu == "Metricas":
+    page = PAGES[menu]
+    page.impresion()
 
 
 

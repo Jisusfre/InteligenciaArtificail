@@ -84,7 +84,7 @@ def impresion():
             st.write('El algoritmo espero por ti')
         
 
-
+#--------------------BOTONES DEL SIDEBAR---------------------------------
         if st.sidebar.button("Grafica frecuencia de datos"):
             Grafica(ListaM)
 
