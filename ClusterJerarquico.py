@@ -9,12 +9,13 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from PIL import Image as im
 import scipy.cluster.hierarchy as shc
 from sklearn.cluster import AgglomerativeClustering
+import time
 
 def impresion():
     tipoGraf = 0
     st.title("Cluster Jerarquico")
     imagen = im.open('Imagenes\ClustersJerar.jpg')
-    st.image(imagen, caption = 'Caminos del Punto A al punto B')
+    st.image(imagen, caption = 'Cluster')
 
 #--------------------Lectura de datos--------------------------------------
     st.subheader('Elige el archivo con los datos a trabajar para iniciar\n ')
@@ -41,23 +42,29 @@ def impresion():
                 tipoGraf = 2 
 
         if tipoGraf == 1:
-            grafica = sns.pairplot(Datos, hue = variable)
-            st.pyplot(grafica)
+            with st.spinner('Cargando la grafica de dispersión...'):
+                grafica = sns.pairplot(Datos, hue = variable)
+                st.pyplot(grafica)
+            
         elif tipoGraf == 2:
-            fig, ax = plt.subplots(figsize=(18,15), dpi=300)
-            MatrizInf = np.triu(CorrDatos)
-            sns.heatmap(CorrDatos, cmap='RdBu_r', annot=True, mask=MatrizInf)
-            st.pyplot(fig)
+            with st.spinner('Cargando el mapa de calor...'):
+                fig, ax = plt.subplots(figsize=(18,15), dpi=300)
+                MatrizInf = np.triu(CorrDatos)
+                sns.heatmap(CorrDatos, cmap='RdBu_r', annot=True, mask=MatrizInf)
+                st.pyplot(fig)
         else:
             pass
         
     #----------------SELECCION DE VARIABLES----------------------------
-        st.header('Seleccion de variables')
-        variables = st.multiselect('Selecciona las variabels para el algoritmo',
-                                  Encabezado, Encabezado[0])
-        Matriz = np.array(Datos[variables])
-        if st.button('Matriz con las variables'):
-            st.write(pd.DataFrame(Matriz))
+        with st.form("my_form"):
+            st.header('Seleccion de variables')
+            variables = st.multiselect('Selecciona las variabels para el algoritmo',
+                                    Encabezado, Encabezado[0])
+            Matriz = np.array(Datos[variables])
+            submitted = st.form_submit_button("Matriz con las variables")
+            if submitted:
+                st.write(pd.DataFrame(Matriz))
+                
     #------------------------APLICACION DEL ALGORITMO------------------
         nclusters = st.number_input('Inserte el numero de clusters que desea tener', step=1)
         
@@ -68,12 +75,12 @@ def impresion():
             if st.button('Aplicar algoritmo'):
                 estandarizar = StandardScaler()                                
                 MEstandarizada = estandarizar.fit_transform(Matriz)
-                st.header('Árbol de clusters')
-                fig, ax = plt.subplots(figsize=(25,15), dpi=300)
-                ax.set_ylabel('Distancia')
-                ax.set_xlabel('Hipoteca')
-                shc.dendrogram(shc.linkage(MEstandarizada, method='complete', metric='euclidean'))
-                st.pyplot(fig)   
+                with st.expander("Arbol"):
+                    fig, ax = plt.subplots(figsize=(25,15), dpi=300)
+                    ax.set_ylabel('Distancia')
+                    ax.set_xlabel(Datos_subidos.name)
+                    shc.dendrogram(shc.linkage(MEstandarizada, method='complete', metric='euclidean'))
+                    st.pyplot(fig)   
         #--------------------------------NUMERO DE CLUSTERS----------------
                 MJerarquico = AgglomerativeClustering(n_clusters=nclusters, linkage='complete', affinity='euclidean')
                 MJerarquico.fit_predict(MEstandarizada)

@@ -10,6 +10,7 @@ import Apriori
 import ClusterJerarquico
 import Inicio
 import metricas
+import ClusterPar
 #Crear entorno virtual :
 #   conda create -n streamlit -y
 
@@ -24,13 +25,16 @@ import metricas
 
 #Variables
 PAGES = {"Apriori":Apriori, "Cluster Jerarquico":ClusterJerarquico, "Inicio":Inicio,
-         "Metricas":metricas}
+         "Metricas":metricas, "Cluster Particional": ClusterPar}
 
 #--------------------------------------------------------------------------
+st.set_page_config(
+    layout = "wide"
+)
 
 menu = st.sidebar.selectbox(
     label = "Algoritmos",
-    options = ["Inicio", "Apriori", "Metricas","Cluster Jerarquico"],
+    options = ["Inicio", "Apriori", "Metricas","Cluster Jerarquico", "Cluster Particional"],
     index = 0,
 )
 if menu == "Apriori":
@@ -46,6 +50,9 @@ elif menu == "Inicio":
     page.entrada()
 
 elif menu == "Metricas":
+    page = PAGES[menu]
+    page.impresion()
+elif menu == "Cluster Particional":
     page = PAGES[menu]
     page.impresion()
 
