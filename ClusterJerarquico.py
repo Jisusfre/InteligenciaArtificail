@@ -9,13 +9,14 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from PIL import Image as im
 import scipy.cluster.hierarchy as shc
 from sklearn.cluster import AgglomerativeClustering
-import time
 
 def impresion():
     tipoGraf = 0
-    st.title("Cluster Jerarquico")
-    imagen = im.open('Imagenes\ClustersJerar.jpg')
-    st.image(imagen, caption = 'Cluster')
+    col1, col2, col3 = st.columns(3)
+    with col2:
+        st.title("Cluster Jerarquico")
+        imagen = im.open('Imagenes\ClustersJerar.jpg')
+        st.image(imagen, caption = 'Cluster')
 
 #--------------------Lectura de datos--------------------------------------
     st.subheader('Elige el archivo con los datos a trabajar para iniciar\n ')
@@ -64,14 +65,13 @@ def impresion():
             submitted = st.form_submit_button("Matriz con las variables")
             if submitted:
                 st.write(pd.DataFrame(Matriz))
-                
-    #------------------------APLICACION DEL ALGORITMO------------------
         nclusters = st.number_input('Inserte el numero de clusters que desea tener', step=1)
         
         if nclusters != 0:
             clustern = st.slider(
             'Selecciona el numero del cluster que quieras ver',
             0, nclusters-1)
+    #------------------------APLICACION DEL ALGORITMO------------------
             if st.button('Aplicar algoritmo'):
                 estandarizar = StandardScaler()                                
                 MEstandarizada = estandarizar.fit_transform(Matriz)
@@ -85,12 +85,12 @@ def impresion():
                 MJerarquico = AgglomerativeClustering(n_clusters=nclusters, linkage='complete', affinity='euclidean')
                 MJerarquico.fit_predict(MEstandarizada)
                 st.subheader('Tus datos con el numero de clusters asignado:')
-                Datos['ClusterH'] = MJerarquico.labels_
+                Datos['Numero_Cluster'] = MJerarquico.labels_
                 st.write(Datos)
                 st.subheader('Tabla del cluster '+ str(clustern))
-                st.write(Datos[Datos.ClusterH == clustern])
+                st.write(Datos[Datos.Numero_Cluster == clustern])
                 st.subheader('Número de elementos por cluster')
-                st.write(Datos.groupby(['ClusterH'])['ClusterH'].count())
+                st.write(Datos.groupby(['Numero_Cluster'])['Numero_Cluster'].count())
 
     #------------------------BOTONES SIDEBAR---------------------------
         if st.sidebar.button("Ver datos"):

@@ -16,6 +16,7 @@ Lift = []
 
 #------------Codigo-------------------------------
 def impresion():
+    
     st.title("Apriori")
     imagen = im.open('Imagenes\Arpiori.jpg')
     st.image(imagen, caption = 'Items')
