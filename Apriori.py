@@ -16,7 +16,7 @@ Lift = []
 
 #------------Codigo-------------------------------
 def impresion():
-    st.title("Algoritmo Apriori")
+    st.title("Apriori")
     imagen = im.open('Imagenes\Arpiori.jpg')
     st.image(imagen, caption = 'Items')
     #DatosMovies = pd.read_csv("Datos/movies.csv")
@@ -37,13 +37,13 @@ def impresion():
         #lista
         lista = Datos.stack().groupby(level=0).apply(list).tolist()
         #Obtenemos la confianza, soporte y elevacion
-        soporte = st.number_input('Inserte el soporte')
+        soporte = st.number_input('Inserte el soporte', format = '%f')
         st.subheader('El soporte que elegiste es de '+ str(soporte))
 
-        confianza = st.number_input('Inserte la confianza')
+        confianza = st.number_input('Inserte la confianza', format = '%f')
         st.subheader('La confinza que elegiste es de '+ str(confianza))
 
-        elevacion = st.number_input('Inserte la elevacion')
+        elevacion = st.number_input('Inserte la elevacion', format = '%f')
         st.subheader('La elevacion que elegiste es de '+ str(elevacion))
         #Aplicamos el algoritmo
         if st.button('Aplicar algoritmo'):

@@ -7,7 +7,7 @@ import seaborn as sns
 import numpy as np
 #Importar otras páginas
 import Apriori
-import Cluster
+import ClusterJerarquico
 import Inicio
 import metricas
 #Crear entorno virtual :
@@ -23,21 +23,21 @@ import metricas
 #   streamlit run mi_programa.py [-- otros posibles argumentos]
 
 #Variables
-PAGES = {"Apriori":Apriori, "Cluster":Cluster, "Inicio":Inicio,
+PAGES = {"Apriori":Apriori, "Cluster Jerarquico":ClusterJerarquico, "Inicio":Inicio,
          "Metricas":metricas}
 
 #--------------------------------------------------------------------------
 
 menu = st.sidebar.selectbox(
     label = "Algoritmos",
-    options = ["Inicio", "Apriori", "Metricas","Cluster"],
+    options = ["Inicio", "Apriori", "Metricas","Cluster Jerarquico"],
     index = 0,
 )
 if menu == "Apriori":
     page = PAGES[menu]
     page.impresion()
     
-elif menu == "Cluster":
+elif menu == "Cluster Jerarquico":
     page = PAGES[menu]
     page.impresion()
 
