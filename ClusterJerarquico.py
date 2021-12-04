@@ -43,7 +43,7 @@ def impresion():
                 tipoGraf = 2 
 
         if tipoGraf == 1:
-            with st.spinner('Cargando la grafica de dispersión...'):
+            with st.spinner('Cargando la grafica de dispersión... esto puede tardar unos segundos'):
                 grafica = sns.pairplot(Datos, hue = variable)
                 st.pyplot(grafica)
             

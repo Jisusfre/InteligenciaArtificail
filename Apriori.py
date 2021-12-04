@@ -16,10 +16,11 @@ Lift = []
 
 #------------Codigo-------------------------------
 def impresion():
-    
-    st.title("Apriori")
-    imagen = im.open('Imagenes\Arpiori.jpg')
-    st.image(imagen, caption = 'Items')
+    col1, col2, col3 = st.columns(3)
+    with col2:
+        st.title("Apriori")
+        imagen = im.open('Imagenes\Arpiori.jpg')
+        st.image(imagen, caption = 'Items')
     #DatosMovies = pd.read_csv("Datos/movies.csv")
     st.subheader('Elige el archivo con los datos a trabajar para iniciar\n ')
     Datos_subidos = st.file_uploader(" ", type = 'csv')

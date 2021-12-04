@@ -5,12 +5,12 @@ import matplotlib.pyplot as plt
 import xarray as xr
 import seaborn as sns
 import numpy as np
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from PIL import Image as im
 import scipy.cluster.hierarchy as shc
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.cluster import KMeans
 from sklearn.metrics import pairwise_distances_argmin_min
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from kneed import KneeLocator
 
 def impresion():
@@ -46,7 +46,7 @@ def impresion():
                 tipoGraf = 2 
 
         if tipoGraf == 1:
-            with st.spinner('Cargando la grafica de dispersión...'):
+            with st.spinner('Cargando la grafica de dispersión... esto puede tardar unos segundos'):
                 grafica = sns.pairplot(Datos, hue = variable)
                 st.pyplot(grafica)
         elif tipoGraf == 2:
@@ -61,7 +61,7 @@ def impresion():
     #----------------SELECCION DE VARIABLES----------------------------
         with st.form("my_form"):
             st.header('Seleccion de variables')
-            variables = st.multiselect('Selecciona las variabels para el algoritmo',
+            variables = st.multiselect('Selecciona las variables para el algoritmo',
                                     Encabezado, Encabezado[3])
             Matriz = np.array(Datos[variables])
             submitted = st.form_submit_button("Matriz con las variables")

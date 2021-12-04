@@ -12,9 +12,11 @@ from PIL import Image as im
 def impresion():
     error = 0
     matriz = 0
-    st.title("Metricas de distancia")
-    imagen = im.open('Imagenes\MetricasDistancia.png')
-    st.image(imagen, caption = 'Caminos del Punto A al punto B')
+    col1, col2, col3 = st.columns(3)
+    with col2:
+        st.title("Metricas de distancia")
+        imagen = im.open('Imagenes\MetricasDistancia.png')
+        st.image(imagen, caption = 'Caminos del Punto A al punto B')
 
 #--------------------Lectura de datos-------------------
     st.subheader('Elige el archivo con los datos a trabajar para iniciar\n ')
