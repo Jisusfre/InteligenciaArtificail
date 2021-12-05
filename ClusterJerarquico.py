@@ -12,11 +12,11 @@ from sklearn.cluster import AgglomerativeClustering
 
 def impresion():
     tipoGraf = 0
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns([1,1,1])
     with col2:
         st.title("Cluster Jerarquico")
         imagen = im.open('Imagenes\ClustersJerar.jpg')
-        st.image(imagen, caption = 'Cluster')
+        st.image(imagen, caption = 'Cluster', width = 400)
 
 #--------------------Lectura de datos--------------------------------------
     st.subheader('Elige el archivo con los datos a trabajar para iniciar\n ')
@@ -65,7 +65,9 @@ def impresion():
             submitted = st.form_submit_button("Matriz con las variables")
             if submitted:
                 st.write(pd.DataFrame(Matriz))
-        nclusters = st.number_input('Inserte el numero de clusters que desea tener', step=1)
+        col1, col2, col3 = st.columns(3)
+        with col2:
+            nclusters = st.number_input('Inserte el numero de clusters que desea tener', step=1)
         
         if nclusters != 0:
             clustern = st.slider(
@@ -76,11 +78,12 @@ def impresion():
                 estandarizar = StandardScaler()                                
                 MEstandarizada = estandarizar.fit_transform(Matriz)
                 with st.expander("Arbol"):
-                    fig, ax = plt.subplots(figsize=(25,15), dpi=300)
-                    ax.set_ylabel('Distancia')
-                    ax.set_xlabel(Datos_subidos.name)
-                    shc.dendrogram(shc.linkage(MEstandarizada, method='complete', metric='euclidean'))
-                    st.pyplot(fig)   
+                    with st.spinner('Graficando el arbol... esto puede tardar unos segundos'):
+                        fig, ax = plt.subplots(figsize=(25,15), dpi=300)
+                        ax.set_ylabel('Distancia')
+                        ax.set_xlabel(Datos_subidos.name)
+                        shc.dendrogram(shc.linkage(MEstandarizada, method='complete', metric='euclidean'))
+                        st.pyplot(fig)   
         #--------------------------------NUMERO DE CLUSTERS----------------
                 MJerarquico = AgglomerativeClustering(n_clusters=nclusters, linkage='complete', affinity='euclidean')
                 MJerarquico.fit_predict(MEstandarizada)
@@ -89,8 +92,10 @@ def impresion():
                 st.write(Datos)
                 st.subheader('Tabla del cluster '+ str(clustern))
                 st.write(Datos[Datos.Numero_Cluster == clustern])
-                st.subheader('Número de elementos por cluster')
-                st.write(Datos.groupby(['Numero_Cluster'])['Numero_Cluster'].count())
+                col1, col2, col3 = st.columns(3)
+                with col2:
+                    st.subheader('Número de elementos por cluster')
+                    st.write(Datos.groupby(['Numero_Cluster'])['Numero_Cluster'].count())
 
     #------------------------BOTONES SIDEBAR---------------------------
         if st.sidebar.button("Ver datos"):

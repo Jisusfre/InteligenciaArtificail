@@ -64,7 +64,7 @@ def impresion():
             variables = st.multiselect('Selecciona las variables para el algoritmo',
                                     Encabezado, Encabezado[3])
             Matriz = np.array(Datos[variables])
-            submitted = st.form_submit_button("Matriz con las variables")
+            submitted = st.form_submit_button("Matriz con las variables e informacion de clusters recomendados")
             if submitted:
                 st.write(pd.DataFrame(Matriz))
     #----------------ESTANDARIZACION DE DATOS---------------------------
@@ -81,8 +81,11 @@ def impresion():
         with st.expander("Informacion de clusters recomendados"):
             st.subheader('El algoritmo te recomeinda que elijas '+str(kl.elbow)+
                         ' clusters para el algoritmo')
-            kl.plot_knee()
-            st.pyplot()
+            col1, col2, col3 = st.columns(3)
+            with col2:
+                fig, ax = plt.subplots(figsize=(30,10), dpi=300)
+                kl.plot_knee()
+                st.pyplot()
 
         nclusters = st.number_input('Inserte el numero de clusters que desea tener', step=1, min_value = 2)
         

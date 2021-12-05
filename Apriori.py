@@ -16,7 +16,7 @@ Lift = []
 
 #------------Codigo-------------------------------
 def impresion():
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns([1,3,1])
     with col2:
         st.title("Apriori")
         imagen = im.open('Imagenes\Arpiori.jpg')
@@ -26,28 +26,28 @@ def impresion():
     Datos_subidos = st.file_uploader(" ", type = 'csv')
 
     if Datos_subidos is not None:
-        #Datos
+        #--------------------------------------Datos--------------------------------------
         Datos = pd.read_csv(Datos_subidos, header = None)
-        #Transaccion y ListaM
+        #--------------------------------------Transaccion y ListaM--------------------------------------
         Transaccion = Datos.values.reshape(-1).tolist()
         ListaM = pd.DataFrame(Transaccion)
-        #ListaM con Frecuencia y porcentaje
+        #--------------------------------------ListaM con Frecuencia y porcentaje--------------------------------------
         ListaM['Frecuencia'] = 0
         ListaM = ListaM.groupby(by=[0], as_index=False).count().sort_values(by=['Frecuencia'],ascending=True) #Conteo
         ListaM['Porcentaje'] = (ListaM['Frecuencia'] / ListaM['Frecuencia'].sum()) #Porcentaje
         ListaM = ListaM.rename(columns={0 : 'Item'})
-        #lista
+        #--------------------------------------lista--------------------------------------
         lista = Datos.stack().groupby(level=0).apply(list).tolist()
-        #Obtenemos la confianza, soporte y elevacion
-        soporte = st.number_input('Inserte el soporte', format = '%f')
+        #--------------------------------------Obtenemos la confianza, soporte y elevacion--------------------------------------
+        soporte = st.number_input('Inserte el soporte', format = '%f', min_value = 0.00001, value = 0.01)
         st.subheader('El soporte que elegiste es de '+ str(soporte))
 
-        confianza = st.number_input('Inserte la confianza', format = '%f')
+        confianza = st.number_input('Inserte la confianza', format = '%f', min_value = 0.00001, value = 0.3)
         st.subheader('La confinza que elegiste es de '+ str(confianza))
 
-        elevacion = st.number_input('Inserte la elevacion', format = '%f')
+        elevacion = st.number_input('Inserte la elevacion', format = '%f', min_value = 0.001, value = 2.0)
         st.subheader('La elevacion que elegiste es de '+ str(elevacion))
-        #Aplicamos el algoritmo
+        #--------------------------------------Aplicamos el algoritmo--------------------------------------
         if st.button('Aplicar algoritmo'):
             Reglas = []
             Confianza = []

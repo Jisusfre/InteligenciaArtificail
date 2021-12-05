@@ -16,7 +16,7 @@ from sklearn.tree import plot_tree
 
 def impresion():
     aplicado = 0
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns([1,3,1])
     with col2:
         st.title("Arboles de pronostico")
         imagen = im.open('Imagenes\ArbolPro.jpg')
@@ -132,13 +132,13 @@ def impresion():
                     col1, col2, col3 = st.columns(3)
                     for i in range(0,len(predictoras),3):
                         with col1:
-                            DatosUsuario[predictoras[i]] = [st.number_input('Inserte el campo '+ predictoras[i], key = 1)]
+                            DatosUsuario[predictoras[i]] = [st.number_input('Inserte el campo '+ predictoras[i], key = 1,format = '%f')]
                         with col2:
                             if i+1 < len(predictoras):
-                                DatosUsuario[predictoras[i+1]] = [st.number_input('Inserte el campo '+ predictoras[i+1], key = 2)]
+                                DatosUsuario[predictoras[i+1]] = [st.number_input('Inserte el campo '+ predictoras[i+1], key = 2,format = '%f')]
                         with col3: 
                             if i+2 < len(predictoras):
-                                DatosUsuario[predictoras[i+2]] = [st.number_input('Inserte el campo '+ predictoras[i+2], key = 3)]
+                                DatosUsuario[predictoras[i+2]] = [st.number_input('Inserte el campo '+ predictoras[i+2], key = 3,format = '%f')]
                     submitted = st.form_submit_button("Aplicar modelo")
                     if submitted:
                         UsuarioNuevo = pd.DataFrame(DatosUsuario)
