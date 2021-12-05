@@ -13,6 +13,7 @@ from sklearn.metrics import confusion_matrix  #Sacar la matriz de los falsos pos
 from sklearn.metrics import accuracy_score
 
 def impresion():
+    aplicado = 0
     tipoGraf = 0
     col1, col2, col3 = st.columns(3)
     with col2:
@@ -68,17 +69,21 @@ def impresion():
             vclase = st.selectbox('Selecciona la variable de clase',
                                     Encabezado)
             MatrizC = np.array(Datos[vclase])
-            submitted = st.form_submit_button("Aplicar algoritmo")
             
-            if submitted:
+            st.header('Seleccion de parametros para el algoritmo')
+            t_s = st.number_input('Test size', min_value = 0.01, max_value = 0.99)
+            r_s = st.number_input('Random state', min_value = 0, max_value = 9999)
+            submitted = st.form_submit_button("Aplicar algoritmo")
+            if submitted or len(predictoras) != 0:
+                aplicado = 1
                 with st.expander('Matriz variables predictoras'):
                     st.write(pd.DataFrame(MatrizP))
                 with st.expander('Matriz variable de clase'):
                     st.write(pd.DataFrame(MatrizC))
     #--------------DIVISION DE DATOS------------------------------------
         X_train, X_validation, Y_train, Y_validation = model_selection.train_test_split(MatrizP, MatrizC, 
-                                                                                test_size = 0.2, 
-                                                                                random_state = 1234,
+                                                                                test_size = t_s, 
+                                                                                random_state = r_s,
                                                                                 shuffle = True)
     #---------------------------ENTRENAMOS AL MODELO----------------------
         Clasificacion = linear_model.LogisticRegression()
@@ -93,19 +98,49 @@ def impresion():
                                             rownames=['R'], 
                                             colnames=['C']) 
         with st.expander('Datos del modelo'):
-            st.subheader('La exactitud del modelo es de '+str(exactitud * 100)+ '%')
-            st.subheader('Matriz de clasificacion')
-            st.write(Matriz_Clasificacion)
-            st.write('Se obtuvieron '+ str(Matriz_Clasificacion)[23:25]+
-                        ' clasificados como '+str(Matriz_Clasificacion)[4:5]+
-                        ' correctamente  y '+str(Matriz_Clasificacion)[37:39]+ 
-                        ' clasificados como '+str(Matriz_Clasificacion)[8:9]+
-                        ' correctamente. Se obtuvieron '+str(Matriz_Clasificacion)[33:35]+
-                        ' clasificados como '+str(Matriz_Clasificacion)[4:5]+
-                        ' que en realidad eran '+str(Matriz_Clasificacion)[8:9]+
-                        ' y se obtuvieron '+str(Matriz_Clasificacion)[27:29]+
-                        ' clasificados como '+str(Matriz_Clasificacion)[8:9]+
-                        ' que en realidad eran '+str(Matriz_Clasificacion)[4:5])
+            if aplicado == 1:
+                palabras = str(Matriz_Clasificacion).split()
+                #st.write(palabras)
+                st.subheader('La exactitud del modelo es de '+str(exactitud * 100)+ '%')
+                st.subheader('Matriz de clasificacion')
+                st.write(Matriz_Clasificacion)
+                st.write('Se obtuvieron '+palabras[5]+
+                            ' clasificados como '+palabras[1]+
+                            ' correctamente  y '+ palabras[9]+ 
+                            ' clasificados como '+palabras[2]+
+                            ' correctamente. Se obtuvieron '+palabras[8]+
+                            ' clasificados como '+palabras[1]+
+                            ' que en realidad eran '+ palabras[2]+
+                            ' y se obtuvieron '+palabras[6] +
+                            ' clasificados como '+ palabras[2]+
+                            ' que en realidad eran '+palabras[1])
+            else:
+                st.subheader('Aplica el algoritmo antes de usar el modelo')
+
+        with st.expander('Usar modelo'):
+            if aplicado == 1:
+                DatosUsuario = { }
+                with st.form('Usando'):
+                    st.subheader('Seleccion de valores de las variables')
+                    col1, col2, col3 = st.columns(3)
+                    for i in range(0,len(predictoras),3):
+                        with col1:
+                            DatosUsuario[predictoras[i]] = [st.number_input('Inserte el campo '+ predictoras[i], key = 1)]
+                        with col2:
+                            if i+1 < len(predictoras):
+                                DatosUsuario[predictoras[i+1]] = [st.number_input('Inserte el campo '+ predictoras[i+1], key = 2)]
+                        with col3: 
+                            if i+2 < len(predictoras):
+                                DatosUsuario[predictoras[i+2]] = [st.number_input('Inserte el campo '+ predictoras[i+2], key = 3)]
+                    submitted = st.form_submit_button("Aplicar modelo")
+                    if submitted:
+                        UsuarioNuevo = pd.DataFrame(DatosUsuario)
+                        st.write('El usuario nuevo ha sido clasificado como '+ str(Clasificacion.predict(UsuarioNuevo))[1:-1])
+            else:
+                st.subheader('Aplica el algoritmo antes de usar el modelo')
+            
+            
+#M = 0 | B = 1
             
 
 
