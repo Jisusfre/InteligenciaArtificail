@@ -13,6 +13,7 @@ import graphviz
 from sklearn.tree import export_graphviz
 from sklearn.tree import export_text
 from sklearn.tree import plot_tree
+import Modulo
 
 def impresion():
     aplicado = 0

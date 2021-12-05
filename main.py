@@ -14,6 +14,7 @@ import ClusterPar
 import Clasificacion
 import ArbolPronostico
 import ArbolDecision
+import Modulo
 #Crear entorno virtual :
 #   conda create -n streamlit -y
 
@@ -29,7 +30,8 @@ import ArbolDecision
 #Variables
 PAGES = {"Apriori":Apriori, "Cluster Jerarquico":ClusterJerarquico, "Inicio":Inicio,
          "Metricas":metricas, "Cluster Particional": ClusterPar, "Clasificacion":Clasificacion,
-         "Arbol Pronostico":ArbolPronostico, "Arbol de Decision":ArbolDecision}
+         "Arbol Pronostico":ArbolPronostico, "Arbol de Decision":ArbolDecision, 
+         "Usar modelo":Modulo}
 
 #--------------------------------------------------------------------------
 st.set_page_config(
@@ -42,7 +44,7 @@ menu = st.sidebar.selectbox(
     label = "Algoritmos",
     options = ["Inicio", "Apriori", "Metricas","Cluster Jerarquico", 
                 "Cluster Particional", "Clasificacion", "Arbol Pronostico",
-                "Arbol de Decision"],
+                "Arbol de Decision", "Modulo"],
     index = 0,
 )
 if menu == "Apriori":
