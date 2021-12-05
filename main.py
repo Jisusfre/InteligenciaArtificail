@@ -13,6 +13,7 @@ import metricas
 import ClusterPar
 import Clasificacion
 import ArbolPronostico
+import ArbolDecision
 #Crear entorno virtual :
 #   conda create -n streamlit -y
 
@@ -28,7 +29,7 @@ import ArbolPronostico
 #Variables
 PAGES = {"Apriori":Apriori, "Cluster Jerarquico":ClusterJerarquico, "Inicio":Inicio,
          "Metricas":metricas, "Cluster Particional": ClusterPar, "Clasificacion":Clasificacion,
-         "Arbol Pronostico":ArbolPronostico}
+         "Arbol Pronostico":ArbolPronostico, "Arbol de Decision":ArbolDecision}
 
 #--------------------------------------------------------------------------
 st.set_page_config(
@@ -40,7 +41,8 @@ st.set_option('deprecation.showPyplotGlobalUse', False)
 menu = st.sidebar.selectbox(
     label = "Algoritmos",
     options = ["Inicio", "Apriori", "Metricas","Cluster Jerarquico", 
-                "Cluster Particional", "Clasificacion", "Arbol Pronostico"],
+                "Cluster Particional", "Clasificacion", "Arbol Pronostico",
+                "Arbol de Decision"],
     index = 0,
 )
 if menu == "Apriori":
@@ -71,4 +73,7 @@ elif menu == "Arbol Pronostico":
     page = PAGES[menu]
     page.impresion()
 
+elif menu == "Arbol de Decision":
+    page = PAGES[menu]
+    page.impresion()
 

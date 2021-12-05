@@ -13,14 +13,19 @@ import graphviz
 from sklearn.tree import export_graphviz
 from sklearn.tree import export_text
 from sklearn.tree import plot_tree
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+from sklearn import model_selection
 
 def impresion():
     aplicado = 0
     col1, col2, col3 = st.columns(3)
     with col2:
-        st.title("Arboles de pronostico")
-        imagen = im.open('Imagenes\ArbolPro.jpg')
-        st.image(imagen, caption = 'Arbol pronostico')
+        st.title("Arboles de Clasificacion")
+        imagen = im.open('Imagenes\ArbolDeci.jpg')
+        st.image(imagen, caption = 'Arbol de Decision')
     #--------------------Lectura de datos--------------------------------------
     st.subheader('Elige el archivo con los datos a trabajar para iniciar\n ')
     Datos_subidos = st.file_uploader(" ", type = 'csv')
@@ -88,41 +93,60 @@ def impresion():
                         st.write(pd.DataFrame(MatrizC))
     #--------------DIVISION DE DATOS------------------------------------
         if aplicado == 1:
-            X_train, X_test, Y_train, Y_test = model_selection.train_test_split(MatrizP, MatrizC, 
+            X_train, X_validation, Y_train, Y_validation = model_selection.train_test_split(MatrizP, MatrizC, 
                                                                                     test_size = t_s, 
                                                                                     random_state = r_s,
                                                                                     shuffle = True)
     
     #---------------ENTRENAMOS AL MODELO---------------------------------
-            PronosticoAD = DecisionTreeRegressor(max_depth=m_d, min_samples_split=m_s_s, min_samples_leaf=m_s_l)
-            PronosticoAD.fit(X_train, Y_train)
+            ClasificacionAD = DecisionTreeClassifier(max_depth=m_d, min_samples_split=m_s_s, min_samples_leaf=m_s_l)
+            ClasificacionAD.fit(X_train, Y_train)
     
-    #-----------------PRONOSTICO-----------------------------------------
-            Y_Pronostico = PronosticoAD.predict(X_test)
+    #-----------------Clasificacion-----------------------------------------
+            Y_Clasificacion = ClasificacionAD.predict(X_validation)
             Valores = pd.DataFrame({
-                "Reales": Y_test, 
-                "Pronostico": Y_Pronostico})
-            with st.expander('Pronostico'):
-                st.subheader('Valores reales VS  pronosticadas')
+                "Reales": Y_validation, 
+                "Clasificacion": Y_Clasificacion})
+            with st.expander('Clasificacion'):
+                st.subheader('Valores reales VS  clasificados')
                 st.write(Valores)
                 with st.spinner('Graficando.... esto puede demorar unos segundos'):
                     fig, ax = plt.subplots(figsize=(30,10), dpi=300)
-                    ax.plot(Y_test, color='green', marker='o', label='Y_test')
-                    ax.plot(Y_Pronostico, color='red', marker='o', label='Y_Pronostico')
+                    ax.plot(Y_validation, color='green', marker='o', label='Y_validation')
+                    ax.plot(Y_Clasificacion, color='red', marker='o', label='Y_Clasificacion')
                     ax.grid(True)
                     ax.legend()
                     st.pyplot(fig)
     
     #------------------DATOS DEL MODELO---------------------------------
             with st.expander('Datos del modelo'):
-                efectividad = r2_score(Y_test, Y_Pronostico)
+                efectividad = ClasificacionAD.score(X_validation, Y_validation)
                 st.info('La efectividad del modelo es del '+str(efectividad*100)[:5]+'%')
-                st.info('Tiene un error absoluto medio (MAE) de '+str(mean_absolute_error(Y_test, Y_Pronostico))[:5])
-                st.info('Los pronosticos del modelo se alejan en promedio '+str(mean_squared_error(Y_test, Y_Pronostico, squared=False))[:5]+' unidades del valor real')
+                #st.write(palabras)
+                
+                Y_Clasificacion = ClasificacionAD.predict(X_validation)
+                Matriz_Clasificacion = pd.crosstab(Y_validation.ravel(), 
+                                            Y_Clasificacion, 
+                                            rownames=['R'], 
+                                            colnames=['C']) 
+                palabras = str(Matriz_Clasificacion).split()
+                st.subheader('Matriz de clasificacion')
+                st.write(Matriz_Clasificacion)
+                st.write('Se obtuvieron '+palabras[5]+
+                            ' clasificados como '+palabras[1]+
+                            ' correctamente  y '+ palabras[9]+ 
+                            ' clasificados como '+palabras[2]+
+                            ' correctamente. Se obtuvieron '+palabras[8]+
+                            ' clasificados como '+palabras[1]+
+                            ' que en realidad eran '+ palabras[2]+
+                            ' y se obtuvieron '+palabras[6] +
+                            ' clasificados como '+ palabras[2]+
+                            ' que en realidad eran '+palabras[1])
+
                 st.subheader('ARBOL RESULTANTE')
                 with st.spinner('Graficando.... esto puede demorar unos segundos'):
                     fig, ax = plt.subplots(figsize=(30,15), dpi=300)
-                    plot_tree(PronosticoAD, feature_names = predictoras)
+                    plot_tree(ClasificacionAD, feature_names = predictoras)
                     st.pyplot(fig)
     #-------------------USAR MODELO--------------------------------------
             with st.expander('Usar modelo'):
@@ -142,7 +166,7 @@ def impresion():
                     submitted = st.form_submit_button("Aplicar modelo")
                     if submitted:
                         UsuarioNuevo = pd.DataFrame(DatosUsuario)
-                        st.info('El pronostico del nuevo usuario es de '+ str(PronosticoAD.predict(UsuarioNuevo))[1:-1])
+                        st.info('El Clasificacion del nuevo usuario es de '+ str(ClasificacionAD.predict(UsuarioNuevo))[1:-1])
             
         elif aplicado == 2:
             st.header('Llene las variables predictoras y de clase')    

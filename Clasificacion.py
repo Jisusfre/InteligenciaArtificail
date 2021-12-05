@@ -9,7 +9,7 @@ from PIL import Image as im
 from sklearn import linear_model
 from sklearn import model_selection
 from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix  #Sacar la matriz de los falsos positivos y esos
+from sklearn.metrics import confusion_matrix  
 from sklearn.metrics import accuracy_score
 
 def impresion():
@@ -72,7 +72,7 @@ def impresion():
             
             st.header('Seleccion de parametros para el algoritmo')
             t_s = st.number_input('Test size', min_value = 0.01, max_value = 0.99)
-            r_s = st.number_input('Random state', min_value = 0, max_value = 9999)
+            r_s = st.number_input('Random state', min_value = 0, max_value = 9999, step = 1)
             submitted = st.form_submit_button("Aplicar algoritmo")
             if submitted or len(predictoras) != 0:
                 aplicado = 1
@@ -139,7 +139,10 @@ def impresion():
             else:
                 st.subheader('Aplica el algoritmo antes de usar el modelo')
             
-            
+    #------------------------BOTONES SIDEBAR---------------------------
+        if st.sidebar.button("Ver datos"):
+            st.subheader('Primeros 10 datos\n ')
+            st.write(Datos.head(10))
 #M = 0 | B = 1
             
 

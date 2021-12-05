@@ -97,12 +97,13 @@ def impresion():
 
 def Grafica(ListaM):
     #Se genera un gráfico de barras
-    fig, ax = plt.subplots(figsize=(16,20), dpi=300)
-    ax.set_ylabel('Item')
-    ax.set_xlabel('Frecuencia')
-    ax.barh(ListaM['Item'], width=ListaM['Frecuencia'], color='gold')
-    st.write("Grafica de la frecuencia de cada dato")
-    st.pyplot(fig)
+    with st.spinner('Graficando.... esto puede demorar unos segundos'):
+        fig, ax = plt.subplots(figsize=(16,20), dpi=300)
+        ax.set_ylabel('Item')
+        ax.set_xlabel('Frecuencia')
+        ax.barh(ListaM['Item'], width=ListaM['Frecuencia'], color='gold')
+        st.write("Grafica de la frecuencia de cada dato")
+        st.pyplot(fig)
     
         
 
