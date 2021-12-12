@@ -59,7 +59,7 @@ def impresion():
     #----------------SELECCION DE VARIABLES----------------------------
         with st.form("my_form"):
             st.header('Seleccion de variables')
-            variables = st.multiselect('Selecciona las variabels para el algoritmo',
+            variables = st.multiselect('Selecciona las variables para el algoritmo',
                                     Encabezado, Encabezado[0])
             Matriz = np.array(Datos[variables])
             submitted = st.form_submit_button("Matriz con las variables")

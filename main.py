@@ -30,8 +30,7 @@ import Modulo
 #Variables
 PAGES = {"Apriori":Apriori, "Cluster Jerarquico":ClusterJerarquico, "Inicio":Inicio,
          "Metricas":metricas, "Cluster Particional": ClusterPar, "Clasificacion":Clasificacion,
-         "Arbol Pronostico":ArbolPronostico, "Arbol de Decision":ArbolDecision, 
-         "Usar modelo":Modulo}
+         "Arbol Pronostico":ArbolPronostico, "Arbol de Decision":ArbolDecision}
 
 #--------------------------------------------------------------------------
 st.set_page_config(
@@ -44,7 +43,7 @@ menu = st.sidebar.selectbox(
     label = "Algoritmos",
     options = ["Inicio", "Apriori", "Metricas","Cluster Jerarquico", 
                 "Cluster Particional", "Clasificacion", "Arbol Pronostico",
-                "Arbol de Decision", "Modulo"],
+                "Arbol de Decision"],
     index = 0,
 )
 if menu == "Apriori":

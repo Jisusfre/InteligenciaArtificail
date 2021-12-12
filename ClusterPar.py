@@ -87,7 +87,7 @@ def impresion():
                 kl.plot_knee()
                 st.pyplot()
 
-        nclusters = st.number_input('Inserte el numero de clusters que desea tener', step=1, min_value = 2)
+        nclusters = st.number_input('Inserte el numero de clusters que desea tener', step=1, min_value = 3)
         
         if nclusters != 0:
             clustern = st.slider(
