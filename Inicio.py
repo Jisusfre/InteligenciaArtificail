@@ -14,6 +14,6 @@ def entrada():
         st.write("### **Alumno: Jesús Bryan parada Pérez**")
         imagen = im.open('Imagenes\Imagen_de_Inicio.jpg')
         st.image(imagen, caption = 'Talos principle')
-    st.video('https://www.youtube.com/watch?v=BzrjfizZ2K8')
+    st.video('https://youtu.be/PB5-zQX43uI')
 
 
